@@ -1,22 +1,15 @@
 
 var selector_prototype = {
     change: function(new_value){
-        //log('change to ' + new_value);
         if( new_value !== undefined ) { 
             this.set_value(new_value);
         }
         this.expanded = !this.expanded;
-        //this.update();
-        update();
     },
     update_options: function(){
         //TODO: find way to do this other than eval
         if( this.options_reference !== undefined ) {
-            //log("reference exists: "+ this.options_reference)
-            //log(settings.make)
-            //log(components.modules)
             eval( 'this.options = ' + this.options_reference + ";" );
-            //log('this.options', this.options)
         }
         if( this.options !== undefined ) {
             this.elem_options.innerHTML = '';
@@ -35,7 +28,6 @@ var selector_prototype = {
             if( ! (this.options.indexOf(this.value)+1) ){
                 this.set_value(this.options[0]);
             }
-            //this.update_elements();
         }
         return this;
     },
@@ -51,20 +43,13 @@ var selector_prototype = {
                 that.location = this.getBoundingClientRect();
                 that.change();
             }, false);
-            //this.elem.appendChild(this.elem_value);
-            //this.update_elements();
-            //update();
         }
         settings[this.setting] = this.value;
-        //log('settings', this.setting, settings[this.setting])
-        //log('settings', settings[this.setting])
         return this;    
     },
     set_options: function(options_reference) {
         this.options_reference = options_reference;
         //TODO: find way to do this other than eval
-        //eval( 'this.options = ' + this.options_reference );
-        //this.update();
         return this;
     },
     set_setting: function(new_setting){
@@ -74,24 +59,19 @@ var selector_prototype = {
         } else {
             this.set_value();
         }
-        //this.update();
         return this;
     },
 
     update: function(){
-        //log('updating: ', this.setting)
-        //log('model', settings.pv_model)
         this.update_options()
         this.update_elements();
         return this;
     },
     update_elements: function() {
         if(this.expanded){
-            //log('open')
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_options);
         } else {
-            //log('close')
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_value);
         }
@@ -105,16 +85,13 @@ for( var id in elem_prototype ) {
 
 var Selector = function(){
     var s = Object.create(selector_prototype);
-    //s.options = ['none'];
     s.expanded = false;
-    //s.setting = setting;
     s.elem = document.createElement('span');
     s.elem.setAttribute('class', 'selector_menu');
 
     s.elem_options = document.createElement('span');
     s.elem_value = document.createElement('span');
     s.elem_value.innerHTML = '-';
-    //s.update_options();
     
     settings_registry.push(s);
     return s;
@@ -127,7 +104,6 @@ var Selector = function(){
 var value_prototype = {
     update: function(){
         update_system();
-        //log('updating value: ' , this.reference , eval( this.reference))
         if( this.reference ){
             eval( 'this.value = ' + this.reference + ';' );
         }    

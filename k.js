@@ -462,6 +462,24 @@ k.show_obj = function(container_id, obj, name){
 }
 
 */
+k.log_object_tree = function(components){
+    for( var make in components.modules ){
+        if( components.modules.hasOwnProperty(make)){
+            for( var model in components.modules[make] ){
+                if( components.modules[make].hasOwnProperty(model)){
+                    var o = components.modules[make][model]
+                    var a = [make,model]
+                    for( var spec in o ){
+                        if( o.hasOwnProperty(spec)){
+                            a.push(o[spec]);
+                        }
+                    }
+                    log(a.join(','))
+                }
+            }
+        }
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FSEC /////////////////////////////////////////////////////////////////////////////////////////////////

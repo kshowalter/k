@@ -162,13 +162,14 @@ k.arrayMax = function(numArray) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // AJAX /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-k.ajax = function(url, callBack) {
+
+k.AJAX = function(url, callback) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
             if(xmlhttp.status == 200){
-                callBack(xmlhttp.responseText);
+                callback(xmlhttp.responseText);
             }
             else if(xmlhttp.status == 400) {
                 log('There was an error 400')
@@ -181,6 +182,27 @@ k.ajax = function(url, callBack) {
 
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
+}
+
+k.parseCSV = function(file_content) {
+    var r = []
+    var lines = file_content.split('\n')
+    var header = lines.shift().split(',')
+    for(var l = 0, len = lines.length; l < len; l++){
+        var line = lines[l]
+        if(line.length > 0){
+            var line_obj = {}
+            line.split(',').forEach(function(item,i){
+                line_obj[header[i]] = item
+            })
+            r.push(line_obj)
+        }
+    }
+    return(r)
+}
+
+k.getCSV = function(URL, callback) {
+    k.AJAX(URL, k.parseCSV() )
 }
 
 /*
@@ -247,27 +269,6 @@ k.getFile = function(URL, callback){
 }
 */
 
-k.getCSV = function(URL, callback) {
-    
-}
-
-k.parseCSV = function(file_content, callback) {
-    var r = []
-    var lines = file_content.split('\n')
-    var header = lines.shift().split(',')
-    log(header)
-    for(var l = 0, len = lines.length; l < len; l++){
-        var line = lines[l]
-        if(line.length > 0){
-            var line_obj = {}
-            line.split(',').forEach(function(item,i){
-                line_obj[header[i]] = item
-            })
-            r.push(line_obj)
-        }
-    }
-    return(r)
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // HTML /////////////////////////////////////////////////////////////////////////////////////////////////

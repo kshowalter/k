@@ -5,6 +5,9 @@ var selector_prototype = {
             this.set_value(new_value);
         }
         this.expanded = !this.expanded;
+        if( this.g_update !== undefined ){
+            this.g_update();
+        update()
     },
     update_options: function(){
         //TODO: find way to do this other than eval
@@ -61,9 +64,11 @@ var selector_prototype = {
         }
         return this;
     },
-
+    setUpdate: function(update_function){
+        this.g_update = update_function; 
+    },
     update: function(){
-        this.update_options()
+        this.update_options();
         this.update_elements();
         return this;
     },
@@ -75,7 +80,7 @@ var selector_prototype = {
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_value);
         }
-    }
+    },
 }
 for( var id in elem_prototype ) {
     if( elem_prototype.hasOwnProperty(id) ) {
@@ -85,6 +90,7 @@ for( var id in elem_prototype ) {
 
 var Selector = function(){
     var s = Object.create(selector_prototype);
+    s.type = 'selector';
     s.expanded = false;
     s.elem = document.createElement('span');
     s.elem.setAttribute('class', 'selector_menu');
@@ -103,7 +109,9 @@ var Selector = function(){
 
 var value_prototype = {
     update: function(){
-        update_system();
+        if( this.g_update !== undefined ){
+            this.g_update();
+        }
         if( this.reference ){
             eval( 'this.value = ' + this.reference + ';' );
         }    
@@ -126,6 +134,9 @@ var value_prototype = {
             this.value = new_value;
         }
         return this;
+    },
+    setUpdate: function(update_function){
+        this.g_update = update_function; 
     },
     setRef: function(reference){
         if( typeof reference !== 'undefined' ){
@@ -152,6 +163,7 @@ for( var id in elem_prototype ) {
 
 function Value() {
     var v = Object.create(value_prototype);
+    v.type = 'value';
     v.elem = document.createElement('span');
 
     v.value = '-';

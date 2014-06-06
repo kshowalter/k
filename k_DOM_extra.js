@@ -7,7 +7,7 @@ var selector_prototype = {
         this.expanded = !this.expanded;
         if( this.g_update !== undefined ){
             this.g_update();
-        update()
+        }
     },
     update_options: function(){
         //TODO: find way to do this other than eval
